@@ -1,0 +1,12 @@
+.title {
+  margin: 12px 0 0 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 12px 0;
+  list-style: circle;
+  gap: 12px;
+}

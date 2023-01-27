@@ -1,0 +1,22 @@
+.item {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.text {
+  margin: 0;
+  margin-right: 20px;
+  font-size: 20px;
+
+  .btn:hover + & {
+    text-decoration: line-through;
+  }
+}
+
+.btn {
+  margin-left: auto;
+  padding: 4px;
+  font-size: 12px;
+  height: fit-content;
+}
