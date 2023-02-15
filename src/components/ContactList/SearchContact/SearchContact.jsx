@@ -1,23 +1,23 @@
 import styles from './SearchContact.module.scss';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setFilter } from 'redux/actions';
 
-const SearchContact = ({ searchContact }) => {
+const SearchContact = () => {
+  const dispatch = useDispatch();
+
+  const hendleChange = ({ target }) => {
+    const filterWord = target.value.toLowerCase();
+    dispatch(setFilter(filterWord));
+  };
+
   const { text, input } = styles;
 
   return (
     <>
       <p className={text}>Fined contact name</p>
-      <input
-        onChange={e => searchContact(e.target.value)}
-        type="text"
-        className={input}
-      />
+      <input onChange={hendleChange} type="text" className={input} />
     </>
   );
-};
-
-SearchContact.propTypes = {
-  searchContact: PropTypes.func.isRequired,
 };
 
 export default SearchContact;
