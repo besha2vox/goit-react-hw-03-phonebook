@@ -1,6 +1,6 @@
 import styles from './SearchContact.module.scss';
 import { useDispatch } from 'react-redux';
-import { setFilter } from 'redux/actions';
+import { setFilter } from 'redux/filterSlice';
 
 const SearchContact = () => {
   const dispatch = useDispatch();

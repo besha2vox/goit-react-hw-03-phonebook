@@ -7,7 +7,7 @@ import { getContacts, getFilter } from 'redux/selectors';
 
 const ContactList = () => {
   const contacts = useSelector(getContacts);
-  const { filter } = useSelector(getFilter);
+  const filter = useSelector(getFilter);
 
   useEffect(() => {});
 
