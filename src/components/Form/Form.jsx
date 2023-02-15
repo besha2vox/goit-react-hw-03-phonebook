@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import styles from './Form.module.scss';
-import PropType from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts } from 'redux/actions';
+import { getContacts } from 'redux/selectors';
 
-const Form = ({ isContains, addContact }) => {
+const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts);
+
+  const dispatch = useDispatch();
 
   const hendleChange = ({ target }) => {
     switch (target.name) {
@@ -21,20 +26,24 @@ const Form = ({ isContains, addContact }) => {
     }
   };
 
+  const isContains = contactName => {
+    return contacts.some(({ name }) => name === contactName);
+  };
+
   const hendleSubmit = e => {
     e.preventDefault();
     if (isContains(name)) {
       alert(`${name} is allready in contacts`);
       return;
     }
-    addContact({ name, number });
+    dispatch(addContacts({ name, number }));
     reset();
   };
 
-  function reset() {
+  const reset = () => {
     setName('');
     setNumber('');
-  }
+  };
 
   const { form, label, input, button } = styles;
 
@@ -76,8 +85,3 @@ const Form = ({ isContains, addContact }) => {
 };
 
 export default Form;
-
-Form.propTypes = {
-  isContains: PropType.func.isRequired,
-  addContact: PropType.func.isRequired,
-};

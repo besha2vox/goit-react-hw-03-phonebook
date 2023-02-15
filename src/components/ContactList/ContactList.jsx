@@ -1,49 +1,47 @@
 import styles from './ContactList.module.scss';
 import SearchContact from './SearchContact';
 import ContactListItem from './ContactListItem';
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/selectors';
 
-const ContactList = ({
-  contacts,
-  removeContact,
-  searchContact,
-  contactsCount,
-}) => {
+const ContactList = () => {
+  const contacts = useSelector(getContacts);
+  const { filter } = useSelector(getFilter);
+
+  useEffect(() => {});
+
+  const filterContacts = () => {
+    if (!filter) return contacts;
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter)
+    );
+  };
+
+  const contactList = filterContacts();
+  const contactsCount = contactList.length;
   const { list, title } = styles;
 
   return (
     <>
       <h2 className={title}>Contacts</h2>
-      <SearchContact searchContact={searchContact} />
+      <SearchContact />
       <p>
         Found {contactsCount} {contactsCount === 1 ? 'contact' : 'contacts'}{' '}
       </p>
-      <ul className={list}>
-        {contacts.map(({ name, number, id }) => (
-          <ContactListItem
-            removeContact={removeContact}
-            name={name}
-            number={number}
-            id={id}
-            key={id}
-          />
-        ))}
-      </ul>
+      {contactsCount && (
+        <ul className={list}>
+          {contactList.map(({ name, number, id }) => (
+            <ContactListItem name={name} number={number} id={id} key={id} />
+          ))}
+        </ul>
+      )}
+      {!contactsCount && <p>Contact list is empty</p>}
     </>
   );
 };
 
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  removeContact: PropTypes.func.isRequired,
-  searchContact: PropTypes.func.isRequired,
-  contactsCount: PropTypes.number.isRequired,
-};
+ContactList.propTypes = {};
 
 export default ContactList;
