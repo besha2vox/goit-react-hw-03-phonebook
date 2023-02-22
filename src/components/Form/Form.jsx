@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import styles from './Form.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContacts } from 'redux/contactsSlice';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 
 const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const dispatch = useDispatch();
 
@@ -32,11 +32,13 @@ const Form = () => {
 
   const hendleSubmit = e => {
     e.preventDefault();
+
     if (isContains(name)) {
       alert(`${name} is allready in contacts`);
       return;
     }
-    dispatch(addContacts({ name, number }));
+
+    dispatch(addContact({ name, number: Number(number) }));
     reset();
   };
 

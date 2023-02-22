@@ -2,46 +2,57 @@ import styles from './ContactList.module.scss';
 import SearchContact from './SearchContact';
 import ContactListItem from './ContactListItem';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchContacts } from 'redux/operations';
+import {
+  selectVisibleContacts,
+  selectIsLoading,
+  selectError,
+  selectContactsCounter,
+  selectVisibleContactsCounter,
+} from 'redux/selectors';
 
 const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
+  const visibleContacts = useSelector(selectVisibleContacts);
+  const contactsCount = useSelector(selectContactsCounter);
+  const visibleContactsCount = useSelector(selectVisibleContactsCounter);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const dispatch = useDispatch();
 
-  useEffect(() => {});
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
-  const filterContacts = () => {
-    if (!filter) return contacts;
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter)
-    );
-  };
-
-  const contactList = filterContacts();
-  const contactsCount = contactList.length;
   const { list, title } = styles;
 
   return (
     <>
       <h2 className={title}>Contacts</h2>
       <SearchContact />
-      <p>
-        Found {contactsCount} {contactsCount === 1 ? 'contact' : 'contacts'}{' '}
-      </p>
-      {contactsCount && (
+      {isLoading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!isLoading && !error && (
+        <>
+          {!!visibleContactsCount ? (
+            <p>
+              Found {visibleContactsCount}/{contactsCount}{' '}
+              {visibleContactsCount === 1 ? 'contact' : 'contacts'}
+            </p>
+          ) : (
+            <p>Contact list is empty</p>
+          )}
+        </>
+      )}
+      {!!contactsCount && (
         <ul className={list}>
-          {contactList.map(({ name, number, id }) => (
+          {visibleContacts.map(({ name, number, id }) => (
             <ContactListItem name={name} number={number} id={id} key={id} />
           ))}
         </ul>
       )}
-      {!contactsCount && <p>Contact list is empty</p>}
     </>
   );
 };
-
-ContactList.propTypes = {};
 
 export default ContactList;
