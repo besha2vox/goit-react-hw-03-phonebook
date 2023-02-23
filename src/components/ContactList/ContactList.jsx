@@ -34,7 +34,7 @@ const ContactList = () => {
       {error && <p>{error}</p>}
       {!isLoading && !error && (
         <>
-          {!!visibleContactsCount ? (
+          {!!contactsCount ? (
             <p>
               Found {visibleContactsCount}/{contactsCount}{' '}
               {visibleContactsCount === 1 ? 'contact' : 'contacts'}
