@@ -14,8 +14,13 @@ const SearchContact = () => {
 
   return (
     <>
-      <p className={text}>Fined contact name</p>
-      <input onChange={hendleChange} type="text" className={input} />
+      <p className={text}>Search for a contact by name</p>
+      <input
+        onChange={hendleChange}
+        type="text"
+        className={input}
+        placeholder="Enter name"
+      />
     </>
   );
 };
