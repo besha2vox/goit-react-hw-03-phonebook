@@ -20,6 +20,8 @@ const ContactList = () => {
   const error = useSelector(selectError);
   const dispatch = useDispatch();
 
+  let a = 2;
+
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
